@@ -1,4 +1,10 @@
-from functools import wraps
+#!/usr/bin/env python
+#-*- coding:utf-8 -*-
+
+try:
+    from functools import wraps
+except ImportError:
+    from django.utils.functional import wraps  # Python 2.4
 
 
 class lazy_property(property):
@@ -20,3 +26,4 @@ class lazy_property(property):
             def fdel(instance, name=fdel.__name__):
                 return getattr(instance, name)()
         return property(fget, fset, fdel, doc)
+
