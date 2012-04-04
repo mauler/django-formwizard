@@ -1,6 +1,7 @@
 import re
 
 from django import forms
+from django.core.files.storage import default_storage
 from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
 from django.forms import formsets, ValidationError
@@ -163,7 +164,8 @@ class WizardView(TemplateView):
             for field in form.base_fields.itervalues():
                 if (isinstance(field, forms.FileField) and
                         not hasattr(cls, 'file_storage')):
-                    raise NoFileStorageConfigured
+                    cls.file_storage = default_storage
+#                    raise NoFileStorageConfigured
 
         # build the kwargs for the formwizard instances
         kwargs['form_list'] = init_form_list
@@ -684,3 +686,4 @@ class NamedUrlCookieWizardView(NamedUrlWizardView):
     A NamedUrlFormWizard with pre-configured CookieStorageBackend.
     """
     storage_name = 'formwizard.storage.cookie.CookieStorage'
+
